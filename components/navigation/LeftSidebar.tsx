@@ -36,10 +36,10 @@ const LeftSidebar = async () => {
             </Button>
           </form>
         ) : (
-          <div className="mt-4 space-y-3">
+          <>
             <Button
               asChild
-              className="small-medium btn-secondary min-h-10 w-full rounded-lg px-4 shadow-none"
+              className="mt-3 small-medium btn-secondary min-h-10 w-full rounded-lg px-4 shadow-none"
             >
               <Link href={ROUTES.AUTH.SIGN_IN}>
                 <Image
@@ -70,7 +70,7 @@ const LeftSidebar = async () => {
                 <span className="max-lg:hidden">Sign Up</span>
               </Link>
             </Button>
-          </div>
+          </>
         )}
       </div>
     </aside>

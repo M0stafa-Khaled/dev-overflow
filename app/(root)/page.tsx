@@ -1,3 +1,4 @@
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
@@ -31,11 +32,69 @@ const Home = async ({
       </section>
       <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
-        <p>Question Card</p>
-        <p>Question Card</p>
-        <p>Question Card</p>
-        <p>Question Card</p>
-        <p>Question Card</p>
+        <QuestionCard
+          question={{
+            _id: "1",
+            answers: 5,
+            author: { name: "mostafa", image: "", _id: "1" },
+            createdAt: new Date("2025-12-5"),
+            tags: [
+              {
+                _id: "1",
+                name: "React",
+              },
+              {
+                _id: "2",
+                name: "javascript",
+              },
+            ],
+            title: "What is the best way to learn React?",
+            upvotes: 5,
+            views: 500,
+          }}
+        />
+        <QuestionCard
+          question={{
+            _id: "1",
+            answers: 5,
+            author: { name: "mostafa", image: "", _id: "1" },
+            createdAt: new Date("2025-12-5"),
+            tags: [
+              {
+                _id: "1",
+                name: "React",
+              },
+              {
+                _id: "2",
+                name: "javascript",
+              },
+            ],
+            title: "What is the best way to learn React?",
+            upvotes: 5,
+            views: 500,
+          }}
+        />
+        <QuestionCard
+          question={{
+            _id: "1",
+            answers: 5,
+            author: { name: "mostafa", image: "", _id: "1" },
+            createdAt: new Date("2025-12-5"),
+            tags: [
+              {
+                _id: "1",
+                name: "React",
+              },
+              {
+                _id: "2",
+                name: "javascript",
+              },
+            ],
+            title: "What is the best way to learn React?",
+            upvotes: 5,
+            views: 500,
+          }}
+        />
       </div>
     </>
   );
