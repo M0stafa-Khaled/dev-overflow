@@ -1,3 +1,4 @@
+import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -28,7 +29,7 @@ const Home = async ({
           otherClasses="flex-1"
         />
       </section>
-      HomeFilter
+      <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
         <p>Question Card</p>
         <p>Question Card</p>
