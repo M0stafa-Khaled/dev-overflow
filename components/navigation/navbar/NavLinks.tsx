@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const NavLinks = ({ isMobileNav }: { isMobileNav: boolean }) => {
+const NavLinks = ({ isMobileNav }: { isMobileNav?: boolean }) => {
   const pathname = usePathname();
   const userId = 1;
   return (
