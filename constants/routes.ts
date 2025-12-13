@@ -2,7 +2,7 @@ const ROUTES = {
   HOME: "/",
   AUTH: {
     SIGN_IN: "/sign-in",
-    SIGN_UP: "/sgin-up",
+    SIGN_UP: "/sign-up",
   },
 };
 
