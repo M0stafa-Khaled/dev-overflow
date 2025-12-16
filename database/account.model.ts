@@ -8,7 +8,7 @@ export interface IAccount {
   provider: "google" | "github";
   providerAccountId: string;
 }
-
+export interface IAccountDoc extends IAccount, Document {}
 const accountSchema = new Schema<IAccount>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
