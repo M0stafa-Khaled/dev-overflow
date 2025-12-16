@@ -38,8 +38,8 @@ export class ValidationError extends RequestError {
 }
 
 export class NotFoundError extends RequestError {
-  constructor(resource: string) {
-    super(404, `${resource} not found`);
+  constructor(message: string) {
+    super(404, message);
     this.name = "NotFoundError";
   }
 }
