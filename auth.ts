@@ -1,8 +1,11 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
 import { api } from "./lib/api";
 import { IAccountDoc } from "./database/account.model";
+import { SignInSchema } from "./lib/validations";
+import bcrypt from "bcrypt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -13,6 +16,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google({
       clientId: process.env.AUTH_GOOLGE_ID,
       clientSecret: process.env.AUTH_GOOLGE_SECRET,
+    }),
+    Credentials({
+      async authorize(credentials) {
+        const validatedFaileds = SignInSchema.safeParse(credentials);
+
+        if (validatedFaileds.success) {
+          const { email, password } = validatedFaileds.data;
+          const { data: existsAccount } = (await api.accounts.getByProvider(
+            email
+          )) as ActionResponse<IAccountDoc>;
+
+          if (!existsAccount) return null;
+
+          const { data: existsUser } = await api.users.getById(
+            existsAccount.userId.toString()
+          );
+
+          if (!existsUser) return null;
+
+          const isValidPassword = await bcrypt.compare(
+            password,
+            existsAccount.password!
+          );
+          if (isValidPassword)
+            return {
+              id: existsUser._id.toString(),
+              name: existsUser.name,
+              email: existsUser.email,
+              image: existsUser.image,
+            };
+        }
+        return null;
+      },
     }),
   ],
   callbacks: {

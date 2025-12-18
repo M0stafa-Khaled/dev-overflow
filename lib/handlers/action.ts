@@ -1,7 +1,7 @@
 "use server";
 
 import { ZodError } from "zod";
-import { ZodSchema } from "zod/v3";
+import { ZodType } from "zod";
 import { UnauthorizedError, ValidationError } from "../http-error";
 import { Session } from "next-auth";
 import { auth } from "@/auth";
@@ -9,7 +9,7 @@ import connectDB from "../mongoose";
 
 type ActionOptions<T> = {
   params?: T;
-  schema?: ZodSchema;
+  schema?: ZodType;
   authorize?: boolean;
 };
 

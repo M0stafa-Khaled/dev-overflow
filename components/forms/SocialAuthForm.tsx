@@ -12,7 +12,6 @@ const SocialAuthForm = () => {
         callbackUrl: ROUTES.HOME,
       });
     } catch (error) {
-      console.log(error);
       toast.error("Sign-in failed", {
         description:
           error instanceof Error
