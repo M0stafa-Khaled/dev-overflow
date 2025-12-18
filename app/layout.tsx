@@ -6,6 +6,7 @@ import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
+import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,9 +51,16 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
 
           <Toaster
             position="top-right"
-            closeButton
+            toastOptions={{
+              closeButton: true,
+            }}
             richColors
-            duration={5000}
+            icons={{
+              success: <CheckCircle2 className="h-5 w-5" />,
+              error: <X className="h-5 w-5" />,
+              warning: <AlertCircle className="h-5 w-5" />,
+              info: <Info className="h-5 w-5" />,
+            }}
           />
         </SessionProvider>
       </body>

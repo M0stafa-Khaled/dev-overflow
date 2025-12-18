@@ -12,8 +12,12 @@ import ROUTES from "@/constants/routes";
 import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
+import { auth, signOut } from "@/auth";
 
-const MobileNavigation = () => {
+const MobileNavigation = async () => {
+  const session = await auth();
+  const userId = session?.user?.id;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -52,24 +56,38 @@ const MobileNavigation = () => {
         </div>
 
         <SheetFooter className="gap-3">
-          <SheetClose asChild>
-            <Button
-              asChild
-              className="small-medium btn-secondary min-h-10 w-full rounded-lg px-4 shadow-none"
-            >
-              <Link href={ROUTES.AUTH.SIGN_IN}>
-                <span className="primary-text-gradient">Log In</span>
-              </Link>
-            </Button>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button
-              asChild
-              className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-10 w-full rounded-lg border px-4 py-3 shadow-none"
-            >
-              <Link href={ROUTES.AUTH.SIGN_UP}>Sign Up</Link>
-            </Button>
-          </SheetClose>
+          {userId ? (
+            <>
+              <SheetClose asChild>
+                <Button
+                  asChild
+                  className="small-medium btn-secondary min-h-10 w-full rounded-lg px-4 shadow-none"
+                >
+                  <Link href={ROUTES.AUTH.SIGN_IN}>
+                    <span className="primary-text-gradient">Log In</span>
+                  </Link>
+                </Button>
+              </SheetClose>
+              <SheetClose asChild>
+                <Button
+                  asChild
+                  className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-10 w-full rounded-lg border px-4 py-3 shadow-none"
+                >
+                  <Link href={ROUTES.AUTH.SIGN_UP}>Sign Up</Link>
+                </Button>
+              </SheetClose>
+            </>
+          ) : (
+            <SheetClose>
+              <form
+                action={async () => {
+                  "use server";
+
+                  await signOut();
+                }}
+              ></form>
+            </SheetClose>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>
