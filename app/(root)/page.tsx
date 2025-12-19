@@ -14,7 +14,6 @@ const Home = async ({
   const { query = "" } = await searchParams;
 
   const session = await auth();
-  console.log(session);
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">

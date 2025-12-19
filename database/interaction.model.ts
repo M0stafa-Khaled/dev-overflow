@@ -1,4 +1,4 @@
-import { Model, model, models, Schema, Types } from "mongoose";
+import { Document, Model, model, models, Schema, Types } from "mongoose";
 
 export interface IInteraction {
   user: Types.ObjectId;

@@ -1,4 +1,4 @@
-import { Model, model, models, Schema, Types } from "mongoose";
+import { Model, model, models, Schema, Types, Document } from "mongoose";
 
 export interface IVote {
   author: Types.ObjectId;
