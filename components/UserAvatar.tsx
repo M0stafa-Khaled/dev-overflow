@@ -3,12 +3,18 @@ import { User } from "next-auth";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
   user: User;
   className?: string;
+  fallbackClassName?: string;
 }
-const UserAvatar = ({ user, className = "h-9 w-9" }: UserAvatarProps) => {
+const UserAvatar = ({
+  user,
+  className = "h-9 w-9",
+  fallbackClassName,
+}: UserAvatarProps) => {
   const initials = user.name
     ?.split(" ")
     .map((word) => word[0])
@@ -28,7 +34,12 @@ const UserAvatar = ({ user, className = "h-9 w-9" }: UserAvatarProps) => {
             className="object-contain"
           />
         ) : (
-          <AvatarFallback className="primary-gradient font-space-grotesk font-bold tracking-wider text-white">
+          <AvatarFallback
+            className={cn(
+              "primary-gradient font-space-grotesk font-bold tracking-wider text-white",
+              fallbackClassName
+            )}
+          >
             {initials}
           </AvatarFallback>
         )}
