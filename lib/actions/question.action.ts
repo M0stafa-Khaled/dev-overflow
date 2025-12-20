@@ -233,8 +233,8 @@ export const getQuestions = async (
 
   if (query) {
     filterQuery.$or = [
-      { title: { $regx: new RegExp(query, "i") } },
-      { content: { $regx: new RegExp(query, "i") } },
+      { title: { $regex: query, $options: "i" } },
+      { content: { $regex: query, $options: "i" } },
     ];
   }
 
