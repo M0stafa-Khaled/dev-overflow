@@ -1,9 +1,9 @@
-import { Document, Model, model, models, Schema, Types } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IQuestion {
   title: string;
   content: string;
-  tags: Types.ObjectId[];
+  tags: Schema.Types.ObjectId[];
   views: number;
   upvoutes: number;
   downvotes: number;
@@ -12,6 +12,7 @@ export interface IQuestion {
 }
 
 export interface IQuestionDoc extends IQuestion, Document {}
+
 const questionSchema = new Schema<IQuestionDoc>(
   {
     title: { type: String, required: true },
@@ -27,7 +28,6 @@ const questionSchema = new Schema<IQuestionDoc>(
 );
 
 const Question =
-  (models?.Question as Model<IQuestionDoc>) ||
-  model<IQuestionDoc>("Question", questionSchema);
+  models?.Question || model<IQuestionDoc>("Question", questionSchema);
 
 export default Question;

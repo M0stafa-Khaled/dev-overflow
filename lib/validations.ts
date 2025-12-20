@@ -65,6 +65,12 @@ export const AskQuestionSchema = z.object({
     .max(3, "Maximum 3 tags allowed"),
 });
 
+export const UpdateQuestionSchema = AskQuestionSchema.extend({
+  questionId: z
+    .string("Question ID is required")
+    .min(1, "Question ID is required"),
+});
+
 export const UserSchema = z.object({
   name: z
     .string("Name is required")
@@ -104,4 +110,18 @@ export const AccountSchema = z.object({
   providerAccountId: z
     .string("Provider account ID is required")
     .min(1, "Provider account ID is required"),
+});
+
+export const GetQuestionSchema = z.object({
+  questionId: z
+    .string("Question ID is required")
+    .min(1, "Question ID is required"),
+});
+
+export const PaginatedSearchSchema = z.object({
+  page: z.number().int().positive().optional().default(1),
+  pageSize: z.number().int().positive().optional().default(10),
+  query: z.string().optional(),
+  filter: z.string().optional(),
+  sort: z.string().optional(),
 });
