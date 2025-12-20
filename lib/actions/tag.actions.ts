@@ -1,8 +1,8 @@
 "use server";
 
-import { Tag } from "@/database";
+import { Question, Tag } from "@/database";
 import handleError from "../handlers/error";
-import { PaginatedSearchSchema } from "../validations";
+import { GetTagQuestionSchema, PaginatedSearchSchema } from "../validations";
 import action from "../handlers/action";
 import { QueryFilter } from "mongoose";
 
@@ -56,6 +56,60 @@ export const getTags = async (
     return {
       success: true,
       data: { tags: JSON.parse(JSON.stringify(tags)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const getTagQuestions = async (
+  params: GetTagQuestionParams
+): Promise<
+  ActionResponse<{ tag: Tag; questions: Question[]; isNext: boolean }>
+> => {
+  const validationResult = await action({
+    params,
+    schema: GetTagQuestionSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, tagId, query } = params;
+  const limit = Number(pageSize);
+  const skip = (Number(page) - 1) * limit;
+
+  try {
+    const tag = await Tag.findById(tagId);
+    if (!tag) throw new Error("Tag Not Found");
+
+    const filterQuery: QueryFilter<typeof Question> = {
+      tags: { $in: [tagId] },
+    };
+
+    if (query) {
+      filterQuery.title = { $regex: query, $options: "i" };
+    }
+    const totalQuestions = await Question.countDocuments(filterQuery);
+
+    const questions = await Question.find(filterQuery)
+      .populate([
+        { path: "author", select: "name image" },
+        { path: "tags", select: "name" },
+      ])
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const isNext = totalQuestions > skip + questions.length;
+    return {
+      success: true,
+      data: {
+        tag: JSON.parse(JSON.stringify(tag)),
+        questions: JSON.parse(JSON.stringify(questions)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
