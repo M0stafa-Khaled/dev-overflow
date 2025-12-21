@@ -193,7 +193,6 @@ export const getQuestion = async (
   const validationResult = await action({
     params,
     schema: GetQuestionSchema,
-    authorize: true,
   });
 
   if (validationResult instanceof Error) {

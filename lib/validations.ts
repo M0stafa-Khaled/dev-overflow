@@ -135,3 +135,19 @@ export const IncrementViewsSchema = z.object({
     .string("Question ID is required")
     .min(1, "Question ID is required"),
 });
+
+export const AnswerSchema = z.object({
+  content: z.string().min(3, "Answer has to have more than 3 characters"),
+});
+
+export const AnswerServerSchema = AnswerSchema.extend({
+  questionId: z
+    .string("Question ID is required")
+    .min(1, "Question ID is required"),
+});
+
+export const GetAnswersSchema = PaginatedSearchSchema.extend({
+  questionId: z
+    .string("Question ID is required")
+    .min(1, "Question ID is required"),
+});

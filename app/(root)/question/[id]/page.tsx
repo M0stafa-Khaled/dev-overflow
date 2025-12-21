@@ -1,8 +1,11 @@
+import AllAnswers from "@/components/answers/AllAnswers";
 import TagCard from "@/components/cards/TagCard";
 import { Preview } from "@/components/editor/Preview";
+import AnswerForm from "@/components/forms/AnswerForm";
 import Metric from "@/components/Metric";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constants/routes";
+import { getAnswers } from "@/lib/actions/answer.action";
 import { getQuestion, incrementViews } from "@/lib/actions/question.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { Metadata } from "next";
@@ -35,7 +38,7 @@ export const generateMetadata = async ({
   };
 };
 
-const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
+const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
   const { success, data: question } = await getQuestion({ questionId: id });
 
@@ -44,6 +47,17 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   });
 
   if (!success || !question) return redirect("/404");
+
+  const {
+    success: areAnswersLoaded,
+    data: answersResult,
+    error: answersError,
+  } = await getAnswers({
+    questionId: id,
+    page: 1,
+    pageSize: 10,
+    filter: "latest",
+  });
 
   const { author, createdAt, answers, views, tags, content, title } = question;
 
@@ -68,6 +82,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
           {title}
         </h2>
       </div>
+
       {/* Metrics States */}
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
         <Metric
@@ -92,6 +107,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
           textStyles="small-regular text-dark400_light700"
         />
       </div>
+
       <Preview content={content} />
       <div className="mt-8 flex flex-wrap gap-2">
         {tags.map((tag: Tag) => (
@@ -103,6 +119,20 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
           />
         ))}
       </div>
+
+      {/* Answers*/}
+      <section className="my-5">
+        <AllAnswers
+          data={answersResult?.answers}
+          success={areAnswersLoaded}
+          error={answersError}
+          totalAnswers={answersResult?.totalAnswers}
+        />
+      </section>
+
+      <section className="my-5">
+        <AnswerForm questionId={id} />
+      </section>
     </>
   );
 };
