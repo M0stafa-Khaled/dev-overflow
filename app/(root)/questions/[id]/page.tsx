@@ -38,8 +38,10 @@ export const generateMetadata = async ({
   };
 };
 
-const QuestionDetails = async ({ params }: RouteParams) => {
+const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
+  const { page, pageSize, filter } = await searchParams;
+
   const { success, data: question } = await getQuestion({ questionId: id });
 
   after(async () => {
@@ -54,9 +56,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     error: answersError,
   } = await getAnswers({
     questionId: id,
-    page: 1,
-    pageSize: 10,
-    filter: "latest",
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    filter,
   });
 
   const { author, createdAt, answers, views, tags, content, title } = question;
@@ -131,7 +133,11 @@ const QuestionDetails = async ({ params }: RouteParams) => {
       </section>
 
       <section className="my-5">
-        <AnswerForm questionId={id} />
+        <AnswerForm
+          questionId={id}
+          questionTitle={question.title}
+          questionContent={question.content}
+        />
       </section>
     </>
   );

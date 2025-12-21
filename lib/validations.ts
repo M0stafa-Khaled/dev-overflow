@@ -51,9 +51,9 @@ export const signInWithOAuthSchema = z.object({
 export const AskQuestionSchema = z.object({
   title: z
     .string("Title is required")
-    .min(1, "Title is required")
-    .max(100, "Title cannot exceed 100 characters"),
-  content: z.string("Body is required").min(1, "Body is required"),
+    .min(5, "Title must be at least 5 characters.")
+    .max(130, "Title cannot exceed 130 characters"),
+  content: z.string().min(100, "Minimum of 100 characters."),
   tags: z
     .array(
       z
@@ -150,4 +150,15 @@ export const GetAnswersSchema = PaginatedSearchSchema.extend({
   questionId: z
     .string("Question ID is required")
     .min(1, "Question ID is required"),
+});
+
+export const AIAnswerSchema = z.object({
+  question: z
+    .string("Qestion is required")
+    .min(5, "Question is required")
+    .max(130, "Question cannot exceed 130 characters"),
+  content: z
+    .string("Question description is required.")
+    .min(100, "Question description must have Minimum of 100 characters."),
+  userAnswer: z.string().optional(),
 });

@@ -9,7 +9,7 @@ const formatResponse = (
   responseType: ResponseType,
   status: number,
   message: string,
-  errors?: Record<string, string[]>
+  errors?: Record<string, string[]> | undefined
 ) => {
   const response = {
     success: false,
@@ -27,7 +27,7 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
   if (error instanceof RequestError) {
     logger.error(
       { err: error },
-      `${responseType.toUpperCase()} Error ${error.message}`
+      `${responseType.toUpperCase()} Error: ${error.message}`
     );
     return formatResponse(
       responseType,
@@ -42,7 +42,11 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
       error.flatten().fieldErrors as Record<string, string[]>
     );
 
-    logger.error({ err: error }, `Validation Error ${validationError.message}`);
+    logger.error(
+      { err: error },
+      `Validation Error: ${validationError.message}`
+    );
+
     return formatResponse(
       responseType,
       validationError.statusCode,
@@ -52,12 +56,9 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
   }
 
   if (error instanceof Error) {
-    logger.error({ err: error }, `Server Error ${error.message}`);
-    return formatResponse(
-      responseType,
-      500,
-      error.message || "An unexpected error occurred"
-    );
+    logger.error(error.message);
+
+    return formatResponse(responseType, 500, error.message);
   }
 
   logger.error({ err: error }, "An unexpected error occurred");
