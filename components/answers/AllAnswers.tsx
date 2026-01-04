@@ -3,9 +3,10 @@ import DataRenderer from "../DataRenderer";
 import AnswerCard from "./AnswerCard";
 
 interface Props extends ActionResponse<Answer[]> {
-  totalAnswers?: number;
+  page: number;
+  isNext: boolean;
+  totalAnswers: number;
 }
-
 const AllAnswers = ({ data, success, error, totalAnswers }: Props) => {
   return (
     <div className="mt-11">
@@ -16,13 +17,13 @@ const AllAnswers = ({ data, success, error, totalAnswers }: Props) => {
         <p>Filter</p>
       </div>
       <DataRenderer
-        success={success}
-        error={error}
-        empty={EMPTY_ANSWERS}
         data={data}
+        error={error}
+        success={success}
+        empty={EMPTY_ANSWERS}
         render={(answers) =>
           answers.map((answer) => (
-            <AnswerCard key={answer._id} answer={answer} />
+            <AnswerCard key={answer._id} {...answer} content={answer.content} />
           ))
         }
       />

@@ -75,17 +75,19 @@ export const getAnswers = async (
   const validationResult = await action({
     params,
     schema: GetAnswersSchema,
-    authorize: true,
   });
 
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
 
-  const { page = 1, pageSize = 10, questionId, filter } = params;
-  const limit = Number(pageSize);
-  const skip = (Number(page) - 1) * limit;
+  const { questionId, page = 1, pageSize = 10, filter } = params;
+
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = pageSize;
+
   let sortCriteria = {};
+
   switch (filter) {
     case "latest":
       sortCriteria = { createdAt: -1 };
@@ -98,6 +100,7 @@ export const getAnswers = async (
       break;
     default:
       sortCriteria = { createdAt: -1 };
+      break;
   }
 
   try {
@@ -105,16 +108,16 @@ export const getAnswers = async (
 
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id name image")
+      .sort(sortCriteria)
       .skip(skip)
-      .limit(limit)
-      .sort(sortCriteria);
+      .limit(limit);
 
     const isNext = totalAnswers > skip + answers.length;
 
     return {
       success: true,
       data: {
-        answers,
+        answers: JSON.parse(JSON.stringify(answers)),
         isNext,
         totalAnswers,
       },
