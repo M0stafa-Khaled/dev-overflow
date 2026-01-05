@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "flagsapi.com",
+        hostname: "*",
         port: "",
       },
     ],
