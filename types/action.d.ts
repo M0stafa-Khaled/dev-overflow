@@ -85,3 +85,66 @@ interface UpdateReputationParams {
   performerId: string;
   authorId: string;
 }
+
+type HasVotedParams = Pick<CreateVoteParams, "targetId" | "targetType">;
+
+interface HasVotedResponse {
+  hasUpvoted: boolean;
+  hasDownvoted: boolean;
+}
+
+interface CollectionBaseParams {
+  questionId: string;
+}
+
+interface JobFilterParams {
+  query: string;
+  page: string;
+}
+
+interface RecommendationParams {
+  userId: string;
+  query?: string;
+  skip: number;
+  limit: number;
+}
+
+interface DeleteQuestionParams {
+  questionId: string;
+}
+
+interface DeleteAnswerParams {
+  answerId: string;
+}
+
+interface UpdateUserParams {
+  name?: string;
+  username?: string;
+  email?: string;
+  image?: string;
+  password?: string;
+}
+
+interface GlobalSearchParams {
+  query: string;
+  type: string | null;
+}
+
+interface GetUserParams {
+  userId: string;
+}
+
+interface GetUserQuestionsParams extends Omit<
+  PaginatedSearchParams,
+  "query | filter | sort"
+> {
+  userId: string;
+}
+
+interface GetUserAnswersParams extends PaginatedSearchParams {
+  userId: string;
+}
+
+interface GetUserTagsParams {
+  userId: string;
+}

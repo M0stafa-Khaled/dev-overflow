@@ -70,10 +70,9 @@ export const signUpWithCredentials = async (
   }
 };
 
-export const signInWithCredentials = async (params: {
-  email: string;
-  password: string;
-}) => {
+export const signInWithCredentials = async (
+  params: Pick<AuthCredentials, "email" | "password">
+): Promise<ActionResponse> => {
   const validationResult = await action({ params, schema: SignInSchema });
 
   if (validationResult instanceof Error)
@@ -86,8 +85,10 @@ export const signInWithCredentials = async (params: {
     if (!existsUser) throw new UnauthorizedError("Invalid credentials");
 
     const existsAccount = await Account.findOne({
+      provider: "credentials",
       providerAccountId: email,
     });
+
     if (!existsAccount) throw new UnauthorizedError("Invalid credentials");
 
     const isPasswordMatched = await bcrypt.compare(

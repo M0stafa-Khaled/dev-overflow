@@ -12,7 +12,7 @@ import {
 import mongoose from "mongoose";
 import { after } from "next/server";
 import { revalidatePath } from "next/cache";
-import { createInteraction } from "./interactin.action";
+import { createInteraction } from "./interaction.action";
 
 export const updateVoteCount = async (
   params: UpdateVoteCountParams,
@@ -46,6 +46,7 @@ export const updateVoteCount = async (
     return handleError(error) as ErrorResponse;
   }
 };
+
 export const createVote = async (
   params: CreateVoteParams
 ): Promise<ActionResponse> => {

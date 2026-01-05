@@ -3,6 +3,7 @@ import { getTimeStamp } from "@/lib/utils";
 import Link from "next/link";
 import TagCard from "./TagCard";
 import Metric from "../Metric";
+import EditDeleteAction from "../users/EditDeleteAction";
 
 interface QuestionCardProps {
   question: Question;
@@ -27,7 +28,7 @@ const QuestionCard = ({
           </Link>
         </div>
 
-        {/* {showActionBtns && <EditDeleteAction type="Question" itemId={_id} />} */}
+        {showActionBtns && <EditDeleteAction type="Question" itemId={_id} />}
       </div>
 
       <div className="mt-3.5 flex w-full flex-wrap gap-2">

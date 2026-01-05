@@ -1,21 +1,24 @@
 import ROUTES from "@/constants/routes";
-import { User } from "next-auth";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
-  user: User;
+  id: string;
+  name: string;
+  imageUrl?: string | null;
   className?: string;
   fallbackClassName?: string;
 }
 const UserAvatar = ({
-  user,
+  id,
+  name,
+  imageUrl,
   className = "h-9 w-9",
   fallbackClassName,
 }: UserAvatarProps) => {
-  const initials = user.name
+  const initials = name
     ?.split(" ")
     .map((word) => word[0])
     .join("")
@@ -23,14 +26,14 @@ const UserAvatar = ({
     .slice(0, 2);
 
   return (
-    <Link href={ROUTES.PROFILE(user.id!)}>
+    <Link href={ROUTES.PROFILE(id!)}>
       <Avatar className={className}>
-        {user.image ? (
+        {imageUrl ? (
           <Image
-            src={user.image}
-            alt={user.name!}
-            width={36}
-            height={36}
+            src={imageUrl}
+            alt={name}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="object-contain"
           />
         ) : (

@@ -8,6 +8,7 @@ import { cn, getTimeStamp } from "@/lib/utils";
 import { Preview } from "../editor/Preview";
 import UserAvatar from "../UserAvatar";
 import Votes from "../votes/Votes";
+import EditDeleteAction from "../users/EditDeleteAction";
 
 interface Props extends Answer {
   containerClasses?: string;
@@ -33,15 +34,23 @@ const AnswerCard = ({
   });
 
   return (
-    <article
+    <div
       className={cn("light-border border-b py-10 relative", containerClasses)}
     >
       <span id={`answer-${_id}`} className="hash-span" />
 
+      {showActionBtns && (
+        <div className="background-light800 flex-center absolute -right-2 -top-5 size-9 rounded-full">
+          <EditDeleteAction type="Answer" itemId={_id} />
+        </div>
+      )}
+
       <div className="mb-5 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <div className="flex flex-1 items-start gap-1 sm:items-center">
           <UserAvatar
-            user={author}
+            id={author._id}
+            name={author.name}
+            imageUrl={author.image}
             className="size-5 rounded-full object-cover max-sm:mt-2"
           />
 
@@ -83,7 +92,7 @@ const AnswerCard = ({
           <p className="mt-1">Read more...</p>
         </Link>
       )}
-    </article>
+    </div>
   );
 };
 

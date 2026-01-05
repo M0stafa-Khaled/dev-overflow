@@ -1,6 +1,6 @@
 import { EMPTY_ANSWERS } from "@/constants/states";
 import DataRenderer from "../DataRenderer";
-import AnswerCard from "./AnswerCard";
+import AnswerCard from "../cards/AnswerCard";
 
 interface Props extends ActionResponse<Answer[]> {
   page: number;
