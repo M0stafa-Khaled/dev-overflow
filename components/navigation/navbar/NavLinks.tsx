@@ -22,7 +22,7 @@ const NavLinks = ({
           (pathname.includes(link.href) && link.href.length > 1) ||
           pathname === link.href;
 
-        if (link.href === "/pofile") {
+        if (link.href === "/profile") {
           if (userId) link.href = `${link.href}/${userId}`;
           else return null;
         }
