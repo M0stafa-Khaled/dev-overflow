@@ -14,15 +14,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
     Google({
-      clientId: process.env.AUTH_GOOLGE_ID,
-      clientSecret: process.env.AUTH_GOOLGE_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFaileds = SignInSchema.safeParse(credentials);
+        const validatedFields = SignInSchema.safeParse(credentials);
 
-        if (validatedFaileds.success) {
-          const { email, password } = validatedFaileds.data;
+        if (validatedFields.success) {
+          const { email, password } = validatedFields.data;
           const { data: existsAccount } = (await api.accounts.getByProvider(
             email
           )) as ActionResponse<IAccountDoc>;
