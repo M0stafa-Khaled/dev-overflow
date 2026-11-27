@@ -102,12 +102,6 @@ interface Job {
   job_country?: string;
 }
 
-interface Country {
-  name: {
-    common: string;
-  };
-}
-
 interface GlobalSearchedItem {
   id: string;
   type: "question" | "answer" | "user" | "tag";

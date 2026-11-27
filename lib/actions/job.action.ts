@@ -5,18 +5,6 @@ export const fetchLocation = async () => {
   return location.country;
 };
 
-export const fetchCountries = async () => {
-  try {
-    const response = await fetch(
-      "https://restcountries.com/v3.1/all?fields=name"
-    );
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const fetchJobs = async (filters: JobFilterParams) => {
   const { query, page } = filters;
 
